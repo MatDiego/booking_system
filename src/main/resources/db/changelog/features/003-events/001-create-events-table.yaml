@@ -1,0 +1,71 @@
+databaseChangeLog:
+  - changeSet:
+      id: 20250330-4-create-events-table
+      author: Mateusz
+      changes:
+        - createTable:
+            tableName: events
+            columns:
+              - column:
+                  name: id
+                  type: UUID
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column: # Zmieniono name na title wg XML
+                  name: title
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: description
+                  type: TEXT
+                  constraints:
+                    nullable: false
+              - column: # Zmieniono startTime na start_date wg XML
+                  name: start_date
+                  type: TIMESTAMP WITHOUT TIME ZONE
+                  constraints:
+                    nullable: false
+              - column: # Zmieniono endTime na end_date wg XML
+                  name: end_date
+                  type: TIMESTAMP WITHOUT TIME ZONE
+                  constraints:
+                    nullable: false
+              - column: # Dodano location wg XML
+                  name: location
+                  type: VARCHAR(50) # Rozważ VARCHAR(255) lub TEXT
+                  constraints:
+                    nullable: false
+              - column: # Dodano capacity wg XML
+                  name: capacity
+                  type: INTEGER
+                  constraints:
+                    nullable: false
+              - column: # event_type wg XML
+                  name: event_type
+                  type: VARCHAR(30) # Sprawdź, czy rozmiar wystarczy dla enum EventType
+                  constraints:
+                    nullable: false
+              - column: # Dodano price wg XML
+                  name: price
+                  type: NUMERIC(5, 2) # 5 cyfr łącznie, 2 po przecinku (np. 999.99)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: organizer_id
+                  type: UUID
+                  constraints:
+                    nullable: false # Czy event *musi* mieć organizatora? Jeśli może być null, zmień na true
+              - column:
+                  name: created_at
+                  type: TIMESTAMP WITHOUT TIME ZONE
+                  defaultValueComputed: CURRENT_TIMESTAMP
+                  constraints:
+                    nullable: false
+              - column:
+                  name: updated_at
+                  type: TIMESTAMP WITHOUT TIME ZONE
+                  defaultValueComputed: CURRENT_TIMESTAMP
+                  constraints:
+                    nullable: false

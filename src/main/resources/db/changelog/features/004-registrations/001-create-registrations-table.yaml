@@ -1,0 +1,36 @@
+databaseChangeLog:
+  - changeSet:
+      id: 20250330-5-create-registrations-table
+      author: Mateusz
+      changes:
+        - createTable:
+            tableName: registrations
+            columns:
+              - column:
+                  name: id
+                  type: UUID
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: user_id
+                  type: UUID
+                  constraints:
+                    nullable: false
+              - column:
+                  name: event_id
+                  type: UUID
+                  constraints:
+                    nullable: false
+              - column: # Zmieniono registrationTime na registration_date wg XML
+                  name: registration_date
+                  type: TIMESTAMP WITHOUT TIME ZONE
+                  defaultValueComputed: CURRENT_TIMESTAMP
+                  constraints:
+                    nullable: false
+              - column:
+                  name: status
+                  type: VARCHAR(30) # Sprawdź, czy rozmiar wystarczy dla enum RegistrationStatus
+                  constraints:
+                    nullable: false
+              # Usunięto created_at/updated_at, bo registration_date pełni podobną rolę, ale możesz je dodać, jeśli potrzebujesz
