@@ -8,7 +8,7 @@ import lombok.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-@Builder
+
 @EndDateAfterStartDate
 public record EventRequestDto(
         @NotBlank(message = "Title cannot be blank")

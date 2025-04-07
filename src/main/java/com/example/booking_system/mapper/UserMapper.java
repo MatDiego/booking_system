@@ -4,17 +4,17 @@ import com.example.booking_system.dto.request.UserRequestDto;
 import com.example.booking_system.dto.response.UserResponseDto;
 import com.example.booking_system.entity.Role;
 import com.example.booking_system.entity.User;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.Named;
+import org.mapstruct.*;
 import org.springframework.stereotype.Component;
 
 import java.util.Collections;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-@Mapper(componentModel = "spring")
-@Component
+@Mapper(
+        componentModel = MappingConstants.ComponentModel.SPRING,
+        injectionStrategy = InjectionStrategy.CONSTRUCTOR
+)
 public interface UserMapper {
 
     @Mapping(target = "id", ignore = true)
