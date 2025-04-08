@@ -42,7 +42,7 @@ databaseChangeLog:
               - column: # Pole do aktywacji konta (np. przez email)
                   name: is_enabled
                   type: BOOLEAN
-                  defaultValueBoolean: false
+                  defaultValueBoolean: true
                   constraints:
                     nullable: false
               - column:
