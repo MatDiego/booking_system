@@ -14,6 +14,9 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
+import java.net.URI;
 
 @RestController
 @RequestMapping("/api/events")
@@ -30,7 +33,12 @@ public class EventController {
             ) {
         String username = userDetails.getUsername();
         EventResponseDto eventResponseDto = eventService.createEvent(eventRequestDto, username);
-        return ResponseEntity.status(HttpStatus.CREATED).body(eventResponseDto);
+
+        URI location = ServletUriComponentsBuilder
+                .fromCurrentRequest().path("/{id}")
+                .buildAndExpand(eventResponseDto.id()).toUri();
+
+        return ResponseEntity.created(location).body(eventResponseDto);
     }
 
     @GetMapping

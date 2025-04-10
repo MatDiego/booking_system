@@ -24,16 +24,8 @@ public class UserController {
             @PathVariable UUID userId,
             @Valid @RequestBody RolesModificationRequestDto requestDto
             ){
-        return ResponseEntity.ok(userService.addRolesToUser(userId, requestDto));
-    }
-
-    @DeleteMapping("/{userId}/roles")
-    @PreAuthorize("hasRole('ADMIN')")
-    public void removeRolesFromUser(
-            @PathVariable UUID userId,
-            @Valid @RequestBody RolesModificationRequestDto requestDto
-    ){
-        userService.removeRolesFromUser(userId, requestDto);
+        UserResponseDto body = userService.addRolesToUser(userId, requestDto);
+        return ResponseEntity.ok(body);
     }
 
 }

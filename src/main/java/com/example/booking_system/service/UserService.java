@@ -7,5 +7,4 @@ import java.util.UUID;
 
 public interface UserService {
     UserResponseDto addRolesToUser(UUID userId, RolesModificationRequestDto requestDto);
-    void removeRolesFromUser(UUID userId, RolesModificationRequestDto requestDto);
 }

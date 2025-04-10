@@ -1,6 +1,7 @@
 package com.example.booking_system.security.config;
 
 
+import com.example.booking_system.security.jwt.AuthEntryPointJwt;
 import com.example.booking_system.security.jwt.JwtAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -23,16 +24,19 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
-@EnableMethodSecurity(prePostEnabled = true)
+@EnableMethodSecurity
 public class SecurityConfig {
 
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
     private final UserDetailsService userDetailsService;
+    private final AuthEntryPointJwt unauthorizedHandler;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
             HttpSecurity httpSecurity = http
                     .csrf(AbstractHttpConfigurer::disable)
+                    .exceptionHandling(exception -> exception
+                    .authenticationEntryPoint(unauthorizedHandler))
                     .authenticationProvider(authenticationProvider())
                     .authorizeHttpRequests(authorize -> authorize
                             .requestMatchers("/api/v1/auth/**").permitAll()

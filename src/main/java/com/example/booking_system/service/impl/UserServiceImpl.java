@@ -5,6 +5,7 @@ import com.example.booking_system.dto.response.UserResponseDto;
 import com.example.booking_system.entity.Role;
 import com.example.booking_system.entity.User;
 import com.example.booking_system.entity.enums.RoleName;
+import com.example.booking_system.exception.ResourceNotFoundException;
 import com.example.booking_system.mapper.UserMapper;
 import com.example.booking_system.repository.RoleRepository;
 import com.example.booking_system.repository.UserRepository;
@@ -15,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -31,36 +33,20 @@ public class UserServiceImpl implements UserService {
             RolesModificationRequestDto requestDto
     ) {
         User user = userRepository.findById(userId)
-                .orElseThrow();
-        //.orElseThrow(() -> new ResourceNotFoundException("User", "id", userId));
+                .orElseThrow(() -> new ResourceNotFoundException("User", "id", userId));
 
-        Set<Role> currentRoles = user.getRoles();
+        Role userRole = roleRepository.findByName(RoleName.ROLE_USER)
+                .orElseThrow(() -> new ResourceNotFoundException("Role", "name", RoleName.ROLE_USER.name()));
 
-        requestDto.roleNames()
-                .forEach(roleName -> {
-                    Role role = roleRepository
-                            .findByName(roleName)
-                            .orElseThrow();
-                    currentRoles.add(role);
-                }
-                );
+        Set<Role> newRoles = requestDto.roleNames().stream()
+                .map(roleName -> roleRepository.findByName(roleName)
+                        .orElseThrow(() -> new ResourceNotFoundException("Role", "name", roleName)))
+                .collect(Collectors.toSet());
+
+        newRoles.add(userRole);
+
+        user.setRoles(newRoles);
 
         return userMapper.userToUserResponse(user);
-    }
-
-    @Override
-    @Transactional
-    public void removeRolesFromUser(UUID userId, RolesModificationRequestDto requestDto) {
-        User user = userRepository.findById(userId)
-                .orElseThrow();
-        requestDto.roleNames()
-                .forEach(roleName -> {
-                    if(!roleName.equals(RoleName.ROLE_USER)){
-                        roleRepository.findByName(roleName)
-                                .ifPresent(role ->
-                                        user.getRoles().remove(role));
-                    }
-                    // exception with user
-                });
     }
 }
