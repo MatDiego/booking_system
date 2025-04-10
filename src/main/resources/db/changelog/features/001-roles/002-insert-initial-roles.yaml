@@ -1,0 +1,29 @@
+databaseChangeLog:
+  - changeSet:
+      id: 20250408-1-insert-initial-roles
+      author: Mateusz
+      comment: "Inserting initial user roles (USER, ORGANIZER, ADMIN)"
+      changes:
+        - insert:
+            tableName: roles
+            columns:
+              - column:
+                  name: name
+                  value: 'ROLE_USER'
+        - insert:
+            tableName: roles
+            columns:
+              - column:
+                  name: name
+                  value: 'ROLE_ORGANIZER'
+        - insert:
+            tableName: roles
+            columns:
+              - column:
+                  name: name
+                  value: 'ROLE_ADMIN'
+
+      rollback:
+        - delete:
+            tableName: roles
+            where: "name IN ('ROLE_USER', 'ROLE_ORGANIZER', 'ROLE_ADMIN')"

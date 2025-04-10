@@ -1,0 +1,18 @@
+databaseChangeLog:
+  - changeSet:
+      id: 20250330-3-create-user_role-join-table
+      author: Mateusz
+      changes:
+        - createTable:
+            tableName: user_role # Rozważ zmianę na user_roles dla spójności z konwencją liczby mnogiej
+            columns:
+              - column:
+                  name: user_id
+                  type: UUID
+                  constraints:
+                    nullable: false
+              - column:
+                  name: role_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false

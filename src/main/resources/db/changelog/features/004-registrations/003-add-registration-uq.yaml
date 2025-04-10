@@ -1,0 +1,9 @@
+databaseChangeLog:
+  - changeSet:
+      id: 20250330-10-add-uq-registration-user-event
+      author: Mateusz
+      changes:
+        - addUniqueConstraint:
+            tableName: registrations
+            columnNames: user_id, event_id
+            constraintName: uq_user_event_registration # Zapewnia, że użytkownik może zapisać się na wydarzenie tylko raz

@@ -1,0 +1,63 @@
+databaseChangeLog:
+  - changeSet:
+      id: 20250408-2-insert-sample-users
+      author: Mateusz
+      comment: "Insert sample users (user, organizer, admin) and assign roles"
+      changes:
+        - insert:
+            tableName: users
+            columns:
+              - column: { name: id, valueComputed: "gen_random_uuid()" }
+              - column: { name: first_name, value: 'Jan' }
+              - column: { name: last_name, value: 'Kowalski' }
+              - column: { name: email, value: 'user@example.com' }
+              - column:
+                  name: password
+                  value: '$2a$10$YpS3PFrcTqzpC.5BLyt.7ueIg42NCbo5mv9yzLlPnZMJ8.QkcSGe.'
+              - column: { name: username, value: 'jank' }
+        - insert:
+            tableName: users
+            columns:
+              - column: { name: id, valueComputed: "gen_random_uuid()" }
+              - column: { name: first_name, value: 'Anna' }
+              - column: { name: last_name, value: 'Nowak' }
+              - column: { name: email, value: 'organizer@example.com' }
+              - column: { name: password, value: '$2a$10$YpS3PFrcTqzpC.5BLyt.7ueIg42NCbo5mv9yzLlPnZMJ8.QkcSGe.' }
+              - column: { name: username, value: 'annan' }
+
+        - insert:
+            tableName: users
+            columns:
+              - column: { name: id, valueComputed: "gen_random_uuid()" }
+              - column: { name: first_name, value: 'Piotr' }
+              - column: { name: last_name, value: 'Zieliński' }
+              - column: { name: email, value: 'admin@example.com' }
+              - column: { name: password, value: '$2a$10$YpS3PFrcTqzpC.5BLyt.7ueIg42NCbo5mv9yzLlPnZMJ8.QkcSGe.' }
+              - column: { name: username, value: 'piotrz' }
+
+        # --- Przypisanie Ról (user_roles join table) ---
+
+
+        - sql:
+            comment: "Assign ROLE_USER to user@example.com"
+            sql: "INSERT INTO user_role (user_id, role_id) VALUES ((SELECT id FROM users WHERE email='user@example.com'), 1);"
+
+        - sql:
+            comment: "Assign ROLE_USER to organizer@example.com"
+            sql: "INSERT INTO user_role (user_id, role_id) VALUES ((SELECT id FROM users WHERE email='organizer@example.com'), 1);"
+
+        - sql:
+            comment: "Assign ROLE_ORGANIZER to organizer@example.com"
+            sql: "INSERT INTO user_role (user_id, role_id) VALUES ((SELECT id FROM users WHERE email='organizer@example.com'), 2);"
+
+        - sql:
+            comment: "Assign ROLE_USER to admin@example.com"
+            sql: "INSERT INTO user_role (user_id, role_id) VALUES ((SELECT id FROM users WHERE email='admin@example.com'), 1);"
+
+        - sql:
+            comment: "Assign ROLE_ORGANIZER to admin@example.com"
+            sql: "INSERT INTO user_role (user_id, role_id) VALUES ((SELECT id FROM users WHERE email='admin@example.com'), 2);"
+
+        - sql:
+            comment: "Assign ROLE_ADMIN to admin@example.com"
+            sql: "INSERT INTO user_role (user_id, role_id) VALUES ((SELECT id FROM users WHERE email='admin@example.com'), 3);"

@@ -1,0 +1,19 @@
+databaseChangeLog:
+  - changeSet:
+      id: 20250330-7-add-fk-user-role
+      author: Mateusz
+      changes:
+        - addForeignKeyConstraint:
+            baseTableName: user_role
+            baseColumnNames: user_id
+            constraintName: fk_user_role_user
+            referencedTableName: users
+            referencedColumnNames: id
+            onDelete: CASCADE # Usunięcie użytkownika usuwa powiązania z rolami
+        - addForeignKeyConstraint:
+            baseTableName: user_role
+            baseColumnNames: role_id
+            constraintName: fk_user_role_role
+            referencedTableName: roles
+            referencedColumnNames: id
+            onDelete: CASCADE # Usunięcie roli usuwa powiązania (uwaga: zazwyczaj ról się nie usuwa)

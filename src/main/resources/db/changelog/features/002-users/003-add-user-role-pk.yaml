@@ -1,0 +1,9 @@
+databaseChangeLog:
+  - changeSet:
+      id: 20250330-6-add-pk-user-role
+      author: Mateusz # Poprawiono autora wg XML
+      changes:
+        - addPrimaryKey:
+            tableName: user_role
+            columnNames: user_id, role_id
+            constraintName: pk_user_role

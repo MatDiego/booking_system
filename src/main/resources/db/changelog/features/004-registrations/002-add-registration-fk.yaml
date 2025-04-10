@@ -1,0 +1,19 @@
+databaseChangeLog:
+  - changeSet:
+      id: 20250330-9-add-fk-registration
+      author: Mateusz
+      changes:
+        - addForeignKeyConstraint:
+            baseTableName: registrations
+            baseColumnNames: user_id
+            constraintName: fk_registration_user
+            referencedTableName: users
+            referencedColumnNames: id
+            onDelete: CASCADE # Usunięcie użytkownika usuwa jego rejestracje
+        - addForeignKeyConstraint:
+            baseTableName: registrations
+            baseColumnNames: event_id
+            constraintName: fk_registration_event
+            referencedTableName: events
+            referencedColumnNames: id
+            onDelete: CASCADE # Usunięcie wydarzenia usuwa jego rejestracje

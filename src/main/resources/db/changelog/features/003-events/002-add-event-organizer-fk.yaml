@@ -1,0 +1,12 @@
+databaseChangeLog:
+  - changeSet:
+      id: 20250330-8-add-fk-event-organizer
+      author: Mateusz
+      changes:
+        - addForeignKeyConstraint:
+            baseTableName: events
+            baseColumnNames: organizer_id
+            constraintName: fk_event_organizer
+            referencedTableName: users
+            referencedColumnNames: id
+            onDelete: RESTRICT # Zapobiega usunięciu użytkownika, który jest organizatorem wydarzenia. Rozważ SET NULL, jeśli organizer_id może być null.
