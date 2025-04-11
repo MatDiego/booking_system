@@ -5,7 +5,6 @@ import com.example.booking_system.dto.response.UserResponseDto;
 import com.example.booking_system.entity.Role;
 import com.example.booking_system.entity.User;
 import org.mapstruct.*;
-import org.springframework.stereotype.Component;
 
 import java.util.Collections;
 import java.util.Set;

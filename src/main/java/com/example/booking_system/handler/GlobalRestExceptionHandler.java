@@ -1,6 +1,7 @@
 package com.example.booking_system.handler;
 
 import com.example.booking_system.dto.response.ErrorResponse;
+import com.example.booking_system.exception.RegistrationConflictException;
 import com.example.booking_system.exception.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -38,5 +39,15 @@ public class GlobalRestExceptionHandler {
 
         ErrorResponse errorResponse = createErrorResponse(HttpStatus.BAD_REQUEST, userFriendlyMessage, request);
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(RegistrationConflictException.class)
+    public ResponseEntity<ErrorResponse> handleRegistrationConflict(RegistrationConflictException ex, WebRequest request) {
+        ErrorResponse errorResponse = createErrorResponse(
+                HttpStatus.CONFLICT,
+                ex.getMessage(),
+                request
+        );
+        return new ResponseEntity<>(errorResponse, HttpStatus.CONFLICT);
     }
 }

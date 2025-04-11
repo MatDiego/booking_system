@@ -29,11 +29,11 @@ public class Registration {
     @NotNull
     private Event event;
     @CreationTimestamp(source = SourceType.DB)
-    @Column(updatable = false)
+    @Column(updatable = false, nullable = false)
     private LocalDateTime registrationDate;
     @Enumerated(EnumType.STRING)
     @NotNull
-    private StatusType status;
+    private StatusType status = StatusType.PENDING;;
 //    @Enumerated(EnumType.STRING)
 //    private TicketType ticketType;
 
