@@ -57,15 +57,18 @@ dependencies {
 
     compileOnly 'org.projectlombok:lombok:1.18.38'
     runtimeOnly 'org.postgresql:postgresql'
+
     annotationProcessor 'org.projectlombok:lombok:1.18.38'
     annotationProcessor 'org.hibernate.orm:hibernate-jpamodelgen:6.6.11.Final'
     annotationProcessor 'org.mapstruct:mapstruct-processor:1.6.3'
     annotationProcessor  'org.projectlombok:lombok-mapstruct-binding:0.2.0'
+
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.boot:spring-boot-testcontainers'
     testImplementation 'org.springframework.security:spring-security-test'
     testImplementation 'org.testcontainers:junit-jupiter'
     testImplementation 'org.testcontainers:postgresql'
+    testAnnotationProcessor "org.mapstruct:mapstruct-processor:1.6.3"
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 liquibase {
@@ -82,5 +85,6 @@ liquibase {
 
 
 tasks.named('test') {
+    jvmArgs "-javaagent:${classpath.find { it.name.contains('byte-buddy-agent') }.absolutePath}"
     useJUnitPlatform()
 }

@@ -33,7 +33,7 @@ public class Registration {
     private LocalDateTime registrationDate;
     @Enumerated(EnumType.STRING)
     @NotNull
-    private StatusType status = StatusType.PENDING;;
+    private StatusType status = StatusType.PENDING;
 //    @Enumerated(EnumType.STRING)
 //    private TicketType ticketType;
 

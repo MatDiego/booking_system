@@ -36,7 +36,7 @@ public class RegistrationServiceImpl implements RegistrationService {
         User user = userRepository.findByIdWithRoles(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("User", "userId", userId));
 
-        boolean alreadyRegistered = registrationRepository.findByUserIdAndEventId(userId, eventId);
+        boolean alreadyRegistered = registrationRepository.existsByUserIdAndEventId(userId, eventId);
         if (alreadyRegistered) {
             throw new RegistrationConflictException("User is already registered for this event");
         }
