@@ -5,7 +5,8 @@ import com.example.booking_system.entity.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+
 
 class UserMapperTest {
 
@@ -17,13 +18,13 @@ class UserMapperTest {
     }
 
     @Test
-    void shouldMapUserToNull() {
+    void returns_null_when_user_entity_is_null() {
         UserResponseDto userResponseDto = userMapper.userToUserResponse(null);
-        assertNull(userResponseDto);
+        assertThat(userResponseDto).isNull();
     }
 
     @Test
-    void shouldMapUserToUserResponse() {
+    void maps_user_entity_to_user_response_dto() {
         User user = new User();
         user.setEmail("test.user@example.com");
         user.setFirstName("Jan");
@@ -31,10 +32,11 @@ class UserMapperTest {
         user.setUsername("testuser");
 
         UserResponseDto userResponseDto = userMapper.userToUserResponse(user);
-        assertNotNull(userResponseDto);
-        assertEquals(user.getFirstName(), userResponseDto.firstName());
-        assertEquals(user.getLastName(), userResponseDto.lastName());
-        assertEquals(user.getUsername(), userResponseDto.username());
-        assertEquals(user.getEmail(), userResponseDto.email());
+
+        assertThat(userResponseDto).isNotNull();
+        assertThat(userResponseDto.firstName()).isEqualTo(user.getFirstName());
+        assertThat(userResponseDto.lastName()).isEqualTo(user.getLastName());
+        assertThat(userResponseDto.username()).isEqualTo(user.getUsername());
+        assertThat(userResponseDto.email()).isEqualTo(user.getEmail());
     }
 }

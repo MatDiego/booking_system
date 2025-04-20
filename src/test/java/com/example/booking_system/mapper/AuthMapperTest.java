@@ -5,7 +5,7 @@ import com.example.booking_system.entity.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 class AuthMapperTest {
 
@@ -17,7 +17,7 @@ class AuthMapperTest {
     }
 
     @Test
-    void shouldMapRegisterRequestDtoToUser() {
+    void maps_register_dto_to_user_entity_setting_basic_info_and_default_enabled_status_ignoring_generated_fields() {
         RegisterRequestDto registerRequestDto = new RegisterRequestDto(
                 "testuser",
                 "test.user@example.com",
@@ -28,20 +28,18 @@ class AuthMapperTest {
 
         User user = mapper.registerRequestDtoToUser(registerRequestDto);
 
-        assertNotNull(user);
-        assertEquals(registerRequestDto.username(), user.getUsername());
-        assertEquals(registerRequestDto.email(), user.getEmail());
-        assertEquals(registerRequestDto.firstName(), user.getFirstName());
-        assertEquals(registerRequestDto.lastName(), user.getLastName());
-        assertNull(user.getId(), "ID should be ignored by mapper");
-        assertNull(user.getPassword(), "Password should be ignored by mapper");
-        assertNull(user.getCreatedAt(), "CreatedAt should be ignored by mapper");
-        assertNull(user.getUpdatedAt(), "UpdatedAt should be ignored by mapper");
-        assertTrue(user.getOrganizedEvents().isEmpty(), "OrganizedEvents should be ignored by mapper");
-        assertTrue(user.getRoles().isEmpty(), "Roles should be ignored by mapper");
-        assertTrue(user.getRegistrations().isEmpty(), "Registrations should be ignored by mapper");
-        assertEquals(true, user.getEnable(), "Enable should be true by default");
-
-
+        assertThat(user).isNotNull();
+        assertThat(user.getUsername()).isEqualTo(registerRequestDto.username());
+        assertThat(user.getEmail()).isEqualTo(registerRequestDto.email());
+        assertThat(user.getFirstName()).isEqualTo(registerRequestDto.firstName());
+        assertThat(user.getLastName()).isEqualTo(registerRequestDto.lastName());
+        assertThat(user.getId()).as("ID should be ignored by mapper").isNull();
+        assertThat(user.getPassword()).as("Password should be ignored by mapper").isNull();
+        assertThat(user.getCreatedAt()).as("Created at should be ignored by mapper").isNull();
+        assertThat(user.getUpdatedAt()).as("Updated at should be ignored by mapper").isNull();
+        assertThat(user.getOrganizedEvents()).as("Organized events should be ignored by mapper").isEmpty();
+        assertThat(user.getRoles()).as("Roles should be ignored by mapper").isEmpty();
+        assertThat(user.getRegistrations()).as("Registrations should be ignored by mapper").isEmpty();
+        assertThat(user.getEnable()).as("Enable should be true by default").isTrue();
     }
 }

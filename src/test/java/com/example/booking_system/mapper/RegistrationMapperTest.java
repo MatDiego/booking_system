@@ -10,30 +10,32 @@ import com.example.booking_system.entity.enums.EventType;
 import com.example.booking_system.entity.enums.StatusType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 
 class RegistrationMapperTest {
 
     private RegistrationMapper registrationMapper;
+    @Mock
     private UserMapper userMapper;
+    @Mock
     private EventMapper eventMapper;
 
     @BeforeEach
     void setUp() {
-        userMapper = mock(UserMapper.class);
-        eventMapper = mock(EventMapper.class);
-        registrationMapper = new RegistrationMapperImpl(userMapper,eventMapper);
+        MockitoAnnotations.openMocks(this);
+        registrationMapper = new RegistrationMapperImpl(userMapper, eventMapper);
     }
 
     @Test
-    void shouldMapRegistrationToRegistrationResponseDto() {
+    void maps_registration_entity_to_response_dto_delegating_user_and_event_mapping() {
         Registration registration = new Registration();
         UUID uuid = UUID.randomUUID();
         LocalDateTime registrationDate = LocalDateTime.now();
@@ -94,14 +96,14 @@ class RegistrationMapperTest {
         RegistrationResponseDto registrationResponseDto = registrationMapper.
                 registrationToRegistrationResponseDto(registration);
 
-        assertNotNull(registrationResponseDto);
-        assertNotNull(registrationResponseDto.user());
-        assertNotNull(registrationResponseDto.event());
-        assertEquals(uuid, registrationResponseDto.id());
-        assertEquals(expectedUserResponseDto, registrationResponseDto.user());
-        assertEquals(expectedEventResponseDto, registrationResponseDto.event());
-        assertEquals(registrationDate, registrationResponseDto.registrationDate());
-        assertEquals(StatusType.PENDING, registrationResponseDto.status());
+        assertThat(registrationResponseDto).isNotNull();
+        assertThat(registrationResponseDto.user()).isNotNull();
+        assertThat(registrationResponseDto.event()).isNotNull();
+        assertThat(registrationResponseDto.id()).isEqualTo(uuid);
+        assertThat(registrationResponseDto.user()).isEqualTo(expectedUserResponseDto);
+        assertThat(registrationResponseDto.event()).isEqualTo(expectedEventResponseDto);
+        assertThat(registrationResponseDto.registrationDate()).isEqualTo(registrationDate);
+        assertThat(registrationResponseDto.status()).isEqualTo(StatusType.PENDING);
 
         verify(userMapper).userToUserResponse(user);
         verify(eventMapper).eventToEventResponseDto(event);
