@@ -1,4 +1,4 @@
-# Zaawansowana Platforma do Organizacji Wydarzeń (Backend)
+# Platforma do Organizacji Wydarzeń (Backend)
 
 ## 🚀 Przegląd Projektu
 
