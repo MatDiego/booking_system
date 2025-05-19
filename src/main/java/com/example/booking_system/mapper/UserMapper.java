@@ -4,7 +4,6 @@ import com.example.booking_system.dto.response.UserResponseDto;
 import com.example.booking_system.entity.User;
 import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
 import org.mapstruct.MappingConstants;
 
 @Mapper(
