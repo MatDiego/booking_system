@@ -35,9 +35,6 @@ databaseChangeLog:
               - column: { name: password, value: '$2a$10$YpS3PFrcTqzpC.5BLyt.7ueIg42NCbo5mv9yzLlPnZMJ8.QkcSGe.' }
               - column: { name: username, value: 'piotrz' }
 
-        # --- Przypisanie Ról (user_roles join table) ---
-
-
         - sql:
             comment: "Assign ROLE_USER to user@example.com"
             sql: "INSERT INTO user_role (user_id, role_id) VALUES ((SELECT id FROM users WHERE email='user@example.com'), 1);"
