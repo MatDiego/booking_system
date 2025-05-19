@@ -1,7 +1,7 @@
 databaseChangeLog:
   - changeSet:
       id: 20250330-6-add-pk-user-role
-      author: Mateusz # Poprawiono autora wg XML
+      author: Mateusz
       changes:
         - addPrimaryKey:
             tableName: user_role

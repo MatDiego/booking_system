@@ -12,7 +12,7 @@ databaseChangeLog:
                   constraints:
                     primaryKey: true
                     nullable: false
-              - column: # Zmieniono name na title wg XML
+              - column:
                   name: title
                   type: VARCHAR(255)
                   constraints:
@@ -22,41 +22,41 @@ databaseChangeLog:
                   type: TEXT
                   constraints:
                     nullable: false
-              - column: # Zmieniono startTime na start_date wg XML
+              - column:
                   name: start_date
                   type: TIMESTAMP WITHOUT TIME ZONE
                   constraints:
                     nullable: false
-              - column: # Zmieniono endTime na end_date wg XML
+              - column:
                   name: end_date
                   type: TIMESTAMP WITHOUT TIME ZONE
                   constraints:
                     nullable: false
-              - column: # Dodano location wg XML
+              - column:
                   name: location
-                  type: VARCHAR(50) # Rozważ VARCHAR(255) lub TEXT
+                  type: VARCHAR(50)
                   constraints:
                     nullable: false
-              - column: # Dodano capacity wg XML
+              - column:
                   name: capacity
                   type: INTEGER
                   constraints:
                     nullable: false
-              - column: # event_type wg XML
+              - column:
                   name: event_type
-                  type: VARCHAR(30) # Sprawdź, czy rozmiar wystarczy dla enum EventType
+                  type: VARCHAR(30)
                   constraints:
                     nullable: false
-              - column: # Dodano price wg XML
+              - column:
                   name: price
-                  type: NUMERIC(5, 2) # 5 cyfr łącznie, 2 po przecinku (np. 999.99)
+                  type: NUMERIC(5, 2)
                   constraints:
                     nullable: false
               - column:
                   name: organizer_id
                   type: UUID
                   constraints:
-                    nullable: false # Czy event *musi* mieć organizatora? Jeśli może być null, zmień na true
+                    nullable: false
               - column:
                   name: created_at
                   type: TIMESTAMP WITHOUT TIME ZONE

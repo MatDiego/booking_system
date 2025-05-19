@@ -9,4 +9,4 @@ databaseChangeLog:
             constraintName: fk_event_organizer
             referencedTableName: users
             referencedColumnNames: id
-            onDelete: RESTRICT # Zapobiega usunięciu użytkownika, który jest organizatorem wydarzenia. Rozważ SET NULL, jeśli organizer_id może być null.
+            onDelete: RESTRICT

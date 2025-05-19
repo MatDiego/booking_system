@@ -9,11 +9,11 @@ databaseChangeLog:
             constraintName: fk_registration_user
             referencedTableName: users
             referencedColumnNames: id
-            onDelete: CASCADE # Usunięcie użytkownika usuwa jego rejestracje
+            onDelete: CASCADE
         - addForeignKeyConstraint:
             baseTableName: registrations
             baseColumnNames: event_id
             constraintName: fk_registration_event
             referencedTableName: events
             referencedColumnNames: id
-            onDelete: CASCADE # Usunięcie wydarzenia usuwa jego rejestracje
+            onDelete: CASCADE

@@ -4,7 +4,7 @@ databaseChangeLog:
       author: Mateusz
       changes:
         - createTable:
-            tableName: user_role # Rozważ zmianę na user_roles dla spójności z konwencją liczby mnogiej
+            tableName: user_role
             columns:
               - column:
                   name: user_id

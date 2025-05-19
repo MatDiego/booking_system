@@ -22,7 +22,7 @@ databaseChangeLog:
                   type: UUID
                   constraints:
                     nullable: false
-              - column: # Zmieniono registrationTime na registration_date wg XML
+              - column:
                   name: registration_date
                   type: TIMESTAMP WITHOUT TIME ZONE
                   defaultValueComputed: CURRENT_TIMESTAMP
@@ -30,7 +30,6 @@ databaseChangeLog:
                     nullable: false
               - column:
                   name: status
-                  type: VARCHAR(30) # Sprawdź, czy rozmiar wystarczy dla enum RegistrationStatus
+                  type: VARCHAR(30)
                   constraints:
                     nullable: false
-              # Usunięto created_at/updated_at, bo registration_date pełni podobną rolę, ale możesz je dodać, jeśli potrzebujesz

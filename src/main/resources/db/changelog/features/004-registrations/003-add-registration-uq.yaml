@@ -6,4 +6,4 @@ databaseChangeLog:
         - addUniqueConstraint:
             tableName: registrations
             columnNames: user_id, event_id
-            constraintName: uq_user_event_registration # Zapewnia, że użytkownik może zapisać się na wydarzenie tylko raz
+            constraintName: uq_user_event_registration

@@ -1,7 +1,7 @@
 databaseChangeLog:
   - changeSet:
       id: 20250330-2-create-users-table
-      author: Mateusz # Poprawiono autora wg XML
+      author: Mateusz
       changes:
         - createTable:
             tableName: users
@@ -12,7 +12,7 @@ databaseChangeLog:
                   constraints:
                     primaryKey: true
                     nullable: false
-              - column: # Zachowuję username, jeśli go potrzebujesz obok email
+              - column:
                   name: username
                   type: VARCHAR(50)
                   constraints:
@@ -26,7 +26,7 @@ databaseChangeLog:
                     unique: true
               - column:
                   name: password
-                  type: VARCHAR(255) # Upewnij się, że długość jest wystarczająca dla hasha BCRYPT
+                  type: VARCHAR(255)
                   constraints:
                     nullable: false
               - column:
@@ -39,7 +39,7 @@ databaseChangeLog:
                   type: VARCHAR(100)
                   constraints:
                     nullable: false
-              - column: # Pole do aktywacji konta (np. przez email)
+              - column:
                   name: is_enabled
                   type: BOOLEAN
                   defaultValueBoolean: true
