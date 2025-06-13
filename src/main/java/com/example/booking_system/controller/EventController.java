@@ -1,5 +1,6 @@
 package com.example.booking_system.controller;
 
+import com.example.booking_system.dto.filter.EventFilterDto;
 import com.example.booking_system.dto.request.EventRequestDto;
 import com.example.booking_system.dto.response.EventResponseDto;
 import com.example.booking_system.security.UserPrincipal;
@@ -12,6 +13,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -59,5 +61,12 @@ public class EventController {
        return ResponseEntity.ok(eventService.getEvent(eventId));
     }
 
-
+    @GetMapping("/search")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<Page<EventResponseDto>> getFilteredEvents(
+            @Validated EventFilterDto filter,
+            Pageable pageable) {
+        Page<EventResponseDto> eventPage = eventService.findEventsByCriteria(filter, pageable);
+        return ResponseEntity.ok(eventPage);
+    }
 }
