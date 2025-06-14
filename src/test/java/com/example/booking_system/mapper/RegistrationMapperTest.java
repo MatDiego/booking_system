@@ -7,7 +7,7 @@ import com.example.booking_system.entity.Event;
 import com.example.booking_system.entity.Registration;
 import com.example.booking_system.entity.User;
 import com.example.booking_system.entity.enums.EventType;
-import com.example.booking_system.entity.enums.StatusType;
+import com.example.booking_system.entity.enums.RegistrationStatus;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -66,7 +66,7 @@ class RegistrationMapperTest {
         registration.setUser(user);
         registration.setEvent(event);
         registration.setRegistrationDate(registrationDate);
-        registration.setStatus(StatusType.PENDING);
+        registration.setStatus(RegistrationStatus.PENDING);
 
         UserResponseDto expectedUserResponseDto = new UserResponseDto(
                 user.getId(),
@@ -103,7 +103,7 @@ class RegistrationMapperTest {
         assertThat(registrationResponseDto.user()).isEqualTo(expectedUserResponseDto);
         assertThat(registrationResponseDto.event()).isEqualTo(expectedEventResponseDto);
         assertThat(registrationResponseDto.registrationDate()).isEqualTo(registrationDate);
-        assertThat(registrationResponseDto.status()).isEqualTo(StatusType.PENDING);
+        assertThat(registrationResponseDto.status()).isEqualTo(RegistrationStatus.PENDING);
 
         verify(userMapper).userToUserResponse(user);
         verify(eventMapper).eventToEventResponseDto(event);

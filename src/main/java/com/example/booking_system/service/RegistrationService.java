@@ -7,7 +7,9 @@ import org.springframework.data.domain.Pageable;
 import java.util.UUID;
 
 public interface RegistrationService {
-    RegistrationResponseDto registerToEvent(UUID userId, UUID eventId);
+    RegistrationResponseDto registerToEvent(UUID eventId);
 
-    Page<RegistrationResponseDto> getUserRegistrations(UUID userId, Pageable pageable);
+    Page<RegistrationResponseDto> getUserRegistrations(Pageable pageable);
+
+    RegistrationResponseDto cancelRegistrationByUser(UUID registrationId);
 }

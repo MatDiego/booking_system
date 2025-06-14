@@ -55,4 +55,22 @@ public class RegistrationServiceImpl implements RegistrationService {
         Page<Registration>  registrationPage = registrationRepository.findByUserId(userId, pageable);
         return registrationPage.map(registrationMapper::registrationToRegistrationResponseDto);
     }
+
+    @Override
+    @Transactional
+    public RegistrationResponseDto cancelRegistrationByUser(UUID registrationId) {
+
+        Registration registration = registrationRepository.findById(registrationId)
+                .orElseThrow(() -> new ResourceNotFoundException("Registration", "id", registrationId));
+
+        RegistrationStatus currentStatus = registration.getStatus();
+        RegistrationStatus newStatus = RegistrationStatus.CANCELED_BY_USER;
+
+        if (!currentStatus.canTransitionTo(newStatus)) {
+            throw new IllegalStateException("Cannot cancel registration from status: " + currentStatus);
+        }
+
+        registration.setStatus(newStatus);
+        return registrationMapper.registrationToRegistrationResponseDto(registration);
+    }
 }

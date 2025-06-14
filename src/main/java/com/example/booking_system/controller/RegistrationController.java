@@ -47,4 +47,13 @@ public class RegistrationController {
         return ResponseEntity.ok(registrationDtoPage);
     }
 
+    @PutMapping("/{id}/cancel")
+    @PreAuthorize("isAuthenticated() and @registrationSecurityService.isOwner(#id)")
+    public ResponseEntity<RegistrationResponseDto> cancelRegistration(
+            @PathVariable UUID id
+    ) {
+        RegistrationResponseDto registrationResponseDto = registrationService.cancelRegistrationByUser(id);
+        return ResponseEntity.ok(registrationResponseDto);
+    }
+
 }

@@ -1,6 +1,6 @@
 package com.example.booking_system.entity;
 
-import com.example.booking_system.entity.enums.StatusType;
+import com.example.booking_system.entity.enums.RegistrationStatus;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
@@ -33,7 +33,7 @@ public class Registration {
     private LocalDateTime registrationDate;
     @Enumerated(EnumType.STRING)
     @NotNull
-    private StatusType status = StatusType.PENDING;
+    private RegistrationStatus status = RegistrationStatus.PENDING;
 //    @Enumerated(EnumType.STRING)
 //    private TicketType ticketType;
 
