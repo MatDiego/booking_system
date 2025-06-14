@@ -10,11 +10,15 @@ import com.example.booking_system.mapper.EventMapper;
 import com.example.booking_system.repository.EventRepository;
 import com.example.booking_system.repository.UserRepository;
 import com.example.booking_system.repository.specification.EventSpecifications;
+import com.example.booking_system.security.UserPrincipal;
 import com.example.booking_system.service.EventService;
+import com.example.booking_system.service.SecurityContextService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,11 +31,14 @@ public class EventServiceImpl implements EventService {
     private final EventRepository eventRepository;
     private final EventMapper eventMapper;
     private final UserRepository userRepository;
+    private final SecurityContextService securityContextService;
 
 
     @Override
     @Transactional
-    public EventResponseDto createEvent(EventRequestDto eventRequestDto, UUID organizerId) {
+    public EventResponseDto createEvent(EventRequestDto eventRequestDto) {
+
+        UUID organizerId = securityContextService.getCurrentUserId();
         User organizer = userRepository.findByIdWithRoles(organizerId)
                 .orElseThrow();
 

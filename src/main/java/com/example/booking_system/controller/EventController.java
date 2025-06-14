@@ -30,11 +30,9 @@ public class EventController {
     @PostMapping
     @PreAuthorize("hasRole('ORGANIZER') or hasRole('ADMIN')")
     public ResponseEntity<EventResponseDto> createEvent(
-            @Valid @RequestBody EventRequestDto eventRequestDto,
-            @AuthenticationPrincipal UserPrincipal userPrincipal
+            @Valid @RequestBody EventRequestDto eventRequestDto
             ) {
-        UUID organizerId = userPrincipal.getUserId();
-        EventResponseDto eventResponseDto = eventService.createEvent(eventRequestDto, organizerId);
+        EventResponseDto eventResponseDto = eventService.createEvent(eventRequestDto);
 
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest().path("/{id}")

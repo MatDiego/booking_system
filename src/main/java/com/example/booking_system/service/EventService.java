@@ -9,7 +9,7 @@ import org.springframework.data.domain.Pageable;
 import java.util.UUID;
 
 public interface EventService {
-    EventResponseDto createEvent(EventRequestDto eventRequestDto, UUID organizerId);
+    EventResponseDto createEvent(EventRequestDto eventRequestDto);
     Page<EventResponseDto> getAllEvents(Pageable pageable);
     EventResponseDto getEvent(UUID eventId);
     Page<EventResponseDto> findEventsByCriteria(EventFilterDto filter, Pageable pageable);

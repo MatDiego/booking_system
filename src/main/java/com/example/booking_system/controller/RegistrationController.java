@@ -1,5 +1,6 @@
 package com.example.booking_system.controller;
 
+import com.example.booking_system.dto.request.RegisterRequestDto;
 import com.example.booking_system.dto.response.RegistrationResponseDto;
 import com.example.booking_system.security.UserPrincipal;
 import com.example.booking_system.service.RegistrationService;
@@ -24,11 +25,9 @@ public class RegistrationController {
     @PostMapping("/events/{eventId}")
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<RegistrationResponseDto> registerToEvent(
-            @PathVariable UUID eventId,
-            @AuthenticationPrincipal UserPrincipal userPrincipal
+            @PathVariable UUID eventId
             ) {
-        UUID userId = userPrincipal.getUserId();
-        RegistrationResponseDto registrationResponseDto = registrationService.registerToEvent(userId, eventId);
+        RegistrationResponseDto registrationResponseDto = registrationService.registerToEvent(eventId);
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest().path("/api/registrations/{id}")
                 .buildAndExpand(registrationResponseDto.id()).toUri();
@@ -38,12 +37,10 @@ public class RegistrationController {
     @GetMapping("/my-registarions")
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<Page<RegistrationResponseDto>> getUserRegistrations(
-            @AuthenticationPrincipal UserPrincipal userPrincipal,
             @PageableDefault(sort = "registrationDate")
             Pageable pageable
     ) {
-        UUID userId = userPrincipal.getUserId();
-        Page<RegistrationResponseDto> registrationDtoPage = registrationService.getUserRegistrations(userId, pageable);
+        Page<RegistrationResponseDto> registrationDtoPage = registrationService.getUserRegistrations(pageable);
         return ResponseEntity.ok(registrationDtoPage);
     }
 

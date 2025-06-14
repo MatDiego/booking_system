@@ -4,7 +4,7 @@ import com.example.booking_system.dto.response.RegistrationResponseDto;
 import com.example.booking_system.entity.Event;
 import com.example.booking_system.entity.Registration;
 import com.example.booking_system.entity.User;
-import com.example.booking_system.entity.enums.StatusType;
+import com.example.booking_system.entity.enums.RegistrationStatus;
 import com.example.booking_system.exception.RegistrationConflictException;
 import com.example.booking_system.exception.ResourceNotFoundException;
 import com.example.booking_system.mapper.RegistrationMapper;
@@ -12,13 +12,13 @@ import com.example.booking_system.repository.EventRepository;
 import com.example.booking_system.repository.RegistrationRepository;
 import com.example.booking_system.repository.UserRepository;
 import com.example.booking_system.service.RegistrationService;
+import com.example.booking_system.service.SecurityContextService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Service
@@ -28,9 +28,12 @@ public class RegistrationServiceImpl implements RegistrationService {
     private final UserRepository userRepository;
     private final RegistrationRepository registrationRepository;
     private final RegistrationMapper registrationMapper;
+    private SecurityContextService securityContextService;
+
     @Override
     @Transactional
-    public RegistrationResponseDto registerToEvent(UUID userId, UUID eventId) {
+    public RegistrationResponseDto registerToEvent(UUID eventId) {
+        UUID userId = securityContextService.getCurrentUserId();
         Event event = eventRepository.findById(eventId)
                 .orElseThrow(() -> new ResourceNotFoundException("Event", "eventId", eventId));
         User user = userRepository.findByIdWithRoles(userId)
@@ -50,8 +53,9 @@ public class RegistrationServiceImpl implements RegistrationService {
     }
 
     @Override
-    @Transactional
-    public Page<RegistrationResponseDto> getUserRegistrations(UUID userId, Pageable pageable) {
+    @Transactional(readOnly = true)
+    public Page<RegistrationResponseDto> getUserRegistrations(Pageable pageable) {
+        UUID userId = securityContextService.getCurrentUserId();
         Page<Registration>  registrationPage = registrationRepository.findByUserId(userId, pageable);
         return registrationPage.map(registrationMapper::registrationToRegistrationResponseDto);
     }
