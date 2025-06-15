@@ -28,7 +28,7 @@ public class RegistrationServiceImpl implements RegistrationService {
     private final UserRepository userRepository;
     private final RegistrationRepository registrationRepository;
     private final RegistrationMapper registrationMapper;
-    private SecurityContextService securityContextService;
+    private final SecurityContextService securityContextService;
 
     @Override
     @Transactional
