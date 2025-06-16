@@ -4,7 +4,7 @@ import com.example.booking_system.dto.filter.EventFilterDto;
 import com.example.booking_system.dto.request.EventRequestDto;
 import com.example.booking_system.dto.response.EventParticipantResponseDto;
 import com.example.booking_system.dto.response.EventResponseDto;
-import com.example.booking_system.security.UserPrincipal;
+import com.example.booking_system.dto.update.UpdateEventDto;
 import com.example.booking_system.service.EventService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -77,6 +77,16 @@ public class EventController {
         Page<EventResponseDto> eventResponseDto = eventService.getMyCreatedEvents(pageable);
         return ResponseEntity.ok(eventResponseDto);
     }
+
+    @PatchMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN') or (hasRole('ORGANIZER') and @eventSecurityService.isEventOwner(#id))")
+    public ResponseEntity<EventResponseDto> updateEvent(
+            @PathVariable UUID id,
+            @Valid @RequestBody UpdateEventDto updateEventDto) {
+        EventResponseDto updatedEvent = eventService.updateEvent(id, updateEventDto);
+        return ResponseEntity.ok(updatedEvent);
+    }
+
     @GetMapping("/{id}/participants")
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<Page<EventParticipantResponseDto>> getParticipants(
@@ -86,5 +96,12 @@ public class EventController {
     ) {
         Page<EventParticipantResponseDto> eventResponseDto = eventService.getEventParticipants(id, pageable);
         return ResponseEntity.ok(eventResponseDto);
+    }
+
+    @PutMapping("/{id}/cancel")
+    @PreAuthorize("hasRole('ADMIN') or @eventSecurityService.isEventOwner(#id)")
+    public ResponseEntity<EventResponseDto> cancelEvent(@PathVariable UUID id) {
+        EventResponseDto canceledEvent = eventService.cancelEvent(id);
+        return ResponseEntity.ok(canceledEvent);
     }
 }

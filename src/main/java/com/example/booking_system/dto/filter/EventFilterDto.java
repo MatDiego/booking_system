@@ -1,8 +1,10 @@
 package com.example.booking_system.dto.filter;
 
+import com.example.booking_system.entity.enums.EventStatus;
 import com.example.booking_system.entity.enums.EventType;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.Size;
+import lombok.Builder;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.math.BigDecimal;
@@ -22,6 +24,7 @@ public record EventFilterDto(
         BigDecimal priceMax,
         UUID organizerId,
         @Size(max = 255, message = "Title cannot exceed 255 characters")
-        String title
+        String title,
+        EventStatus eventStatus
 ) {
 }

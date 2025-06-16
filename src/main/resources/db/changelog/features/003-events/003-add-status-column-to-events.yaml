@@ -1,0 +1,14 @@
+databaseChangeLog:
+  - changeSet:
+      id: 20250616-1-add-status-column-to-events
+      author: Mateusz
+      changes:
+        - addColumn:
+            tableName: events
+            columns:
+              - column:
+                  name: eventStatus
+                  type: varchar(30)
+                  defaultValue: 'SCHEDULED'
+                  constraints:
+                    nullable: false

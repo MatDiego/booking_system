@@ -1,0 +1,10 @@
+databaseChangeLog:
+  - changeSet:
+      id: 20250616-2-rename-eventStatus-to-status
+      author: Mateusz
+      changes:
+        - renameColumn:
+            tableName: events
+            oldColumnName: eventStatus
+            newColumnName: event_status
+            columnDataType: varchar(30)

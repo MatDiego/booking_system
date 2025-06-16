@@ -1,15 +1,12 @@
-package com.example.booking_system.dto.response;
+package com.example.booking_system.dto.update;
 
 import com.example.booking_system.entity.enums.EventStatus;
 import com.example.booking_system.entity.enums.EventType;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.UUID;
 
-
-public record EventResponseDto(
-        UUID id,
+public record UpdateEventDto(
         String title,
         String description,
         LocalDateTime startDate,
@@ -18,7 +15,6 @@ public record EventResponseDto(
         Integer capacity,
         EventType eventType,
         BigDecimal price,
-        UserResponseDto userResponseDto,
         EventStatus eventStatus
 ) {
 }

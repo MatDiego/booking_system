@@ -1,6 +1,8 @@
 package com.example.booking_system.entity;
 
+import com.example.booking_system.entity.enums.EventStatus;
 import com.example.booking_system.entity.enums.EventType;
+import com.example.booking_system.validation.DateRange;
 import com.example.booking_system.validation.EndDateAfterStartDate;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
@@ -22,7 +24,7 @@ import java.util.UUID;
 @Entity
 @EndDateAfterStartDate
 @Table(name = "events")
-public class Event {
+public class Event implements DateRange {
     @Id
     @UuidGenerator(style = UuidGenerator.Style.RANDOM)
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -61,7 +63,9 @@ public class Event {
             fraction = 2
     )
     private BigDecimal price;
-//    private Set<String> tags;
+    @Enumerated(EnumType.STRING)
+    @NotNull
+    private EventStatus eventStatus;
     @CreationTimestamp(source = SourceType.DB)
     @Column(updatable = false)
     private LocalDateTime createdAt;
@@ -84,5 +88,21 @@ public class Event {
         registration.setEvent(null);
     }
 
+    @Override
+    public LocalDateTime getStartDate() {
+        return startDate;
+    }
+
+    @Override
+    public LocalDateTime getEndDate() {
+        return endDate;
+    }
+
+    @PrePersist
+    protected void onCreate() {
+        if (this.eventStatus == null) {
+            this.eventStatus = EventStatus.SCHEDULED;
+        }
+    }
 
 }

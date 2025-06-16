@@ -4,8 +4,12 @@ import com.example.booking_system.dto.filter.EventFilterDto;
 import com.example.booking_system.dto.request.EventRequestDto;
 import com.example.booking_system.dto.response.EventParticipantResponseDto;
 import com.example.booking_system.dto.response.EventResponseDto;
+import com.example.booking_system.dto.update.UpdateEventDto;
 import com.example.booking_system.entity.Event;
+import com.example.booking_system.entity.Registration;
 import com.example.booking_system.entity.User;
+import com.example.booking_system.entity.enums.EventStatus;
+import com.example.booking_system.entity.enums.RegistrationStatus;
 import com.example.booking_system.exception.ResourceNotFoundException;
 import com.example.booking_system.mapper.EventMapper;
 import com.example.booking_system.mapper.RegistrationMapper;
@@ -13,21 +17,20 @@ import com.example.booking_system.repository.EventRepository;
 import com.example.booking_system.repository.RegistrationRepository;
 import com.example.booking_system.repository.UserRepository;
 import com.example.booking_system.repository.specification.EventSpecifications;
-import com.example.booking_system.security.UserPrincipal;
 import com.example.booking_system.service.EventService;
-import com.example.booking_system.service.SecurityContextService;
+import com.example.booking_system.service.security.SecurityContextService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.annotation.Validated;
 
 import java.util.UUID;
 
 @Service
+@Validated
 @RequiredArgsConstructor
 public class EventServiceImpl implements EventService {
 
@@ -104,6 +107,15 @@ public class EventServiceImpl implements EventService {
             combinedSpec = combinedSpec.and(EventSpecifications.titleContains(filter.title()));
         }
 
+        EventStatus statusToFilter;
+
+        if (filter.eventStatus() == null) {
+            statusToFilter = EventStatus.SCHEDULED;
+        } else {
+            statusToFilter = filter.eventStatus();
+        }
+
+        combinedSpec = combinedSpec.and(EventSpecifications.hasEventStatus(statusToFilter));
         Page<Event> eventPage = eventRepository.findAll(combinedSpec, pageable);
         return eventPage.map(eventMapper::eventToEventResponseDto);
     }
@@ -116,6 +128,42 @@ public class EventServiceImpl implements EventService {
         return organizerEvents.map(eventMapper::eventToEventResponseDto);
     }
 
+    @Override
+    @Transactional
+    public EventResponseDto updateEvent(UUID eventId, UpdateEventDto dto) {
+        Event eventToUpdate = eventRepository.findById(eventId)
+                .orElseThrow(() -> new ResourceNotFoundException("Event", "id", eventId));
+
+        if (dto.title() != null && !dto.title().isBlank()) {
+            eventToUpdate.setTitle(dto.title());
+        }
+        if (dto.description() != null) {
+            eventToUpdate.setDescription(dto.description());
+        }
+        if (dto.startDate() != null) {
+            eventToUpdate.setStartDate(dto.startDate());
+        }
+        if (dto.endDate() != null) {
+            eventToUpdate.setEndDate(dto.endDate());
+        }
+        if (dto.location() != null) {
+            eventToUpdate.setLocation(dto.location());
+        }
+        if (dto.capacity() != null) {
+            eventToUpdate.setCapacity(dto.capacity());
+        }
+        if (dto.eventType() != null) {
+            eventToUpdate.setEventType(dto.eventType());
+        }
+        if (dto.price() != null) {
+            eventToUpdate.setPrice(dto.price());
+        }
+        if (dto.eventStatus() != null) {
+            eventToUpdate.setEventStatus(dto.eventStatus());
+        }
+
+        return eventMapper.eventToEventResponseDto(eventToUpdate);
+    }
 
     @Override
     @Transactional(readOnly = true)
@@ -127,4 +175,19 @@ public class EventServiceImpl implements EventService {
         return registrations.map(registrationMapper::registrationToParticipantResponseDto);
     }
 
+    @Override
+    @Transactional
+    public EventResponseDto cancelEvent(UUID eventId) {
+        Event event = eventRepository.findById(eventId)
+                .orElseThrow(() -> new ResourceNotFoundException("Event", "id", eventId));
+
+        if (!event.getEventStatus().canTransitionTo(EventStatus.CANCELED)) {
+            throw new IllegalStateException("Cannot cancel event from status: " + event.getEventStatus());
+        }
+
+        event.setEventStatus(EventStatus.CANCELED);
+        registrationRepository.updateStatusByEventId(eventId, RegistrationStatus.CANCELED_BY_EVENT);
+
+        return eventMapper.eventToEventResponseDto(event);
+    }
 }

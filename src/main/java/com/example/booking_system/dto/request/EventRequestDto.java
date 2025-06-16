@@ -1,6 +1,8 @@
 package com.example.booking_system.dto.request;
 
+import com.example.booking_system.entity.enums.EventStatus;
 import com.example.booking_system.entity.enums.EventType;
+import com.example.booking_system.validation.DateRange;
 import com.example.booking_system.validation.EndDateAfterStartDate;
 import jakarta.validation.constraints.*;
 
@@ -31,6 +33,16 @@ public record EventRequestDto(
         EventType eventType,
         @NotNull(message = "Price cannot be null")
         @PositiveOrZero(message = "Price must be positive or zero")
-        BigDecimal price
-) {
+        BigDecimal price,
+        EventStatus eventStatus
+) implements DateRange {
+        @Override
+        public LocalDateTime getStartDate() {
+                return startDate;
+        }
+
+        @Override
+        public LocalDateTime getEndDate() {
+                return endDate;
+        }
 }
