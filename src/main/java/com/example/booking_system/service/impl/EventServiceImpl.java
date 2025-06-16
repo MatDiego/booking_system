@@ -103,4 +103,13 @@ public class EventServiceImpl implements EventService {
         Page<Event> eventPage = eventRepository.findAll(combinedSpec, pageable);
         return eventPage.map(eventMapper::eventToEventResponseDto);
     }
+
+    @Override
+    public Page<EventResponseDto> getMyCreatedEvents(Pageable pageable) {
+        UUID organizerId = securityContextService.getCurrentUserId();
+        Page<Event> organizerEvents = eventRepository.findByOrganizerId(organizerId, pageable);
+
+        return organizerEvents.map(eventMapper::eventToEventResponseDto);
+    }
+
 }

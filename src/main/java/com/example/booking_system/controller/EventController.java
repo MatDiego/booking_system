@@ -67,4 +67,14 @@ public class EventController {
         Page<EventResponseDto> eventPage = eventService.findEventsByCriteria(filter, pageable);
         return ResponseEntity.ok(eventPage);
     }
+
+    @GetMapping("my-events")
+    @PreAuthorize("hasRole('ORGANIZER') or hasRole('ADMIN')")
+    public ResponseEntity<Page<EventResponseDto>> getMyEvents(
+            @PageableDefault(sort = "startDate")
+            Pageable pageable
+    ) {
+        Page<EventResponseDto> eventResponseDto = eventService.getMyCreatedEvents(pageable);
+        return ResponseEntity.ok(eventResponseDto);
+    }
 }
