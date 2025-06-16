@@ -12,7 +12,7 @@ import com.example.booking_system.repository.EventRepository;
 import com.example.booking_system.repository.RegistrationRepository;
 import com.example.booking_system.repository.UserRepository;
 import com.example.booking_system.service.RegistrationService;
-import com.example.booking_system.service.SecurityContextService;
+import com.example.booking_system.service.security.SecurityContextService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

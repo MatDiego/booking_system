@@ -1,4 +1,4 @@
-package com.example.booking_system.service;
+package com.example.booking_system.service.security;
 
 import com.example.booking_system.security.UserPrincipal;
 

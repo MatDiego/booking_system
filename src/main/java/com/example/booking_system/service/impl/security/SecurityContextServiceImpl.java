@@ -1,7 +1,7 @@
-package com.example.booking_system.service.impl;
+package com.example.booking_system.service.impl.security;
 
 import com.example.booking_system.security.UserPrincipal;
-import com.example.booking_system.service.SecurityContextService;
+import com.example.booking_system.service.security.SecurityContextService;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;

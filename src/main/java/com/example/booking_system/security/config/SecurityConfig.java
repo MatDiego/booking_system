@@ -39,7 +39,7 @@ public class SecurityConfig {
                     .authenticationEntryPoint(unauthorizedHandler))
                     .authenticationProvider(authenticationProvider())
                     .authorizeHttpRequests(authorize -> authorize
-                            .requestMatchers("/api/auth/**").permitAll()
+                            .requestMatchers("/api/auth/**", "/error").permitAll()
                             .anyRequest().authenticated()
                     )
                     .sessionManagement(session -> session

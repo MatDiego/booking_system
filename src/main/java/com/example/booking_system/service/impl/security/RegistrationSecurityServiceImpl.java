@@ -1,8 +1,8 @@
-package com.example.booking_system.service.impl;
+package com.example.booking_system.service.impl.security;
 
 import com.example.booking_system.repository.RegistrationRepository;
 import com.example.booking_system.security.UserPrincipal;
-import com.example.booking_system.service.RegistrationSecurityService;
+import com.example.booking_system.service.security.RegistrationSecurityService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
