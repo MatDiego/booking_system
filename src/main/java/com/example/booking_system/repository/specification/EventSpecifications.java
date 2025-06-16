@@ -4,6 +4,7 @@ import com.example.booking_system.entity.Event;
 import com.example.booking_system.entity.Event_;
 import com.example.booking_system.entity.User;
 import com.example.booking_system.entity.User_;
+import com.example.booking_system.entity.enums.EventStatus;
 import com.example.booking_system.entity.enums.EventType;
 import jakarta.persistence.criteria.Join;
 import jakarta.persistence.criteria.JoinType;
@@ -62,5 +63,10 @@ public class EventSpecifications {
 
         return (root, query, criteriaBuilder) ->
                 title == null || title.isBlank() ? null : criteriaBuilder.like(criteriaBuilder.lower(root.get(Event_.title)), "%" + title.toLowerCase() + "%");
+    }
+
+    public static Specification<Event> hasEventStatus(EventStatus eventStatus) {
+        return (root, query, criteriaBuilder) ->
+                eventStatus == null ? null : criteriaBuilder.equal(root.get(Event_.eventStatus), eventStatus);
     }
 }

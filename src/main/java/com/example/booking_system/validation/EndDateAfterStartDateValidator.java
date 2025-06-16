@@ -5,12 +5,12 @@ import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 import java.time.LocalDateTime;
 
-public class EndDateAfterStartDateValidator implements ConstraintValidator<EndDateAfterStartDate, Event> {
+public class EndDateAfterStartDateValidator implements ConstraintValidator<EndDateAfterStartDate, DateRange> {
 
     @Override
-    public boolean isValid(Event event, ConstraintValidatorContext context) {
-        LocalDateTime startDate = event.getStartDate();
-        LocalDateTime endDate = event.getEndDate();
+    public boolean isValid(DateRange dateRangeObject, ConstraintValidatorContext context) {
+        LocalDateTime startDate = dateRangeObject.getStartDate();
+        LocalDateTime endDate = dateRangeObject.getEndDate();
 
         if (startDate == null || endDate == null) {
             return true;
