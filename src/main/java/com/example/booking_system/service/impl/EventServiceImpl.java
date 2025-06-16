@@ -2,12 +2,15 @@ package com.example.booking_system.service.impl;
 
 import com.example.booking_system.dto.filter.EventFilterDto;
 import com.example.booking_system.dto.request.EventRequestDto;
+import com.example.booking_system.dto.response.EventParticipantResponseDto;
 import com.example.booking_system.dto.response.EventResponseDto;
 import com.example.booking_system.entity.Event;
 import com.example.booking_system.entity.User;
 import com.example.booking_system.exception.ResourceNotFoundException;
 import com.example.booking_system.mapper.EventMapper;
+import com.example.booking_system.mapper.RegistrationMapper;
 import com.example.booking_system.repository.EventRepository;
+import com.example.booking_system.repository.RegistrationRepository;
 import com.example.booking_system.repository.UserRepository;
 import com.example.booking_system.repository.specification.EventSpecifications;
 import com.example.booking_system.security.UserPrincipal;
@@ -32,7 +35,8 @@ public class EventServiceImpl implements EventService {
     private final EventMapper eventMapper;
     private final UserRepository userRepository;
     private final SecurityContextService securityContextService;
-
+    private final RegistrationRepository registrationRepository;
+    private final RegistrationMapper registrationMapper;
 
     @Override
     @Transactional
@@ -110,6 +114,17 @@ public class EventServiceImpl implements EventService {
         Page<Event> organizerEvents = eventRepository.findByOrganizerId(organizerId, pageable);
 
         return organizerEvents.map(eventMapper::eventToEventResponseDto);
+    }
+
+
+    @Override
+    @Transactional(readOnly = true)
+    public Page<EventParticipantResponseDto> getEventParticipants(UUID eventId, Pageable pageable) {
+        if (!eventRepository.existsById(eventId)) {
+            throw new ResourceNotFoundException("Event", "id", eventId);
+        }
+        Page<Registration> registrations = registrationRepository.findByEventIdWithUser(eventId, pageable);
+        return registrations.map(registrationMapper::registrationToParticipantResponseDto);
     }
 
 }

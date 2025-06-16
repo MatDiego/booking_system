@@ -2,6 +2,7 @@ package com.example.booking_system.controller;
 
 import com.example.booking_system.dto.filter.EventFilterDto;
 import com.example.booking_system.dto.request.EventRequestDto;
+import com.example.booking_system.dto.response.EventParticipantResponseDto;
 import com.example.booking_system.dto.response.EventResponseDto;
 import com.example.booking_system.security.UserPrincipal;
 import com.example.booking_system.service.EventService;
@@ -12,7 +13,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -75,6 +75,16 @@ public class EventController {
             Pageable pageable
     ) {
         Page<EventResponseDto> eventResponseDto = eventService.getMyCreatedEvents(pageable);
+        return ResponseEntity.ok(eventResponseDto);
+    }
+    @GetMapping("/{id}/participants")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<Page<EventParticipantResponseDto>> getParticipants(
+            @PathVariable UUID id,
+            @PageableDefault(sort = "registrationDate")
+            Pageable pageable
+    ) {
+        Page<EventParticipantResponseDto> eventResponseDto = eventService.getEventParticipants(id, pageable);
         return ResponseEntity.ok(eventResponseDto);
     }
 }

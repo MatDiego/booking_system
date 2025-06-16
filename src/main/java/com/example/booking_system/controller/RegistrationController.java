@@ -34,7 +34,7 @@ public class RegistrationController {
         return ResponseEntity.created(location).body(registrationResponseDto);
     }
 
-    @GetMapping("/my-registarions")
+    @GetMapping("/my-registrations")
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<Page<RegistrationResponseDto>> getUserRegistrations(
             @PageableDefault(sort = "registrationDate")
