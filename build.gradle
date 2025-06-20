@@ -72,13 +72,23 @@ dependencies {
     testAnnotationProcessor "org.mapstruct:mapstruct-processor:1.6.3"
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
+
+def props = new Properties()
+
+def propsFile = file("src/main/resources/application.properties")
+if (propsFile.exists()) {
+    propsFile.withInputStream {
+        props.load(it)
+    }
+}
+
 liquibase {
     activities {
         main {
-            changeLogFile 'src/main/resources/db/changelog/db.changelog-master.yaml'
-            url 'jdbc:postgresql://localhost:5433/booking_system'
-            username 'postgres'
-            password 'postgres'
+            changeLogFile props.getProperty("spring.liquibase.change-log")
+            url props.getProperty("spring.datasource.url")
+            username props.getProperty("spring.datasource.username")
+            password props.getProperty("spring.datasource.password")
         }
 
     }
