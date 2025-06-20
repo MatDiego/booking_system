@@ -71,7 +71,8 @@ class EventMapperTest {
                 "Kraków",
                 testCapacity,
                 EventType.CONFERENCE,
-                testPrice
+                testPrice,
+                null
         );
         Event event = mapper.eventRequestDtoToEvent(eventRequestDto);
 

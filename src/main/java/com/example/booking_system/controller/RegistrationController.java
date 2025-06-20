@@ -1,8 +1,6 @@
 package com.example.booking_system.controller;
 
-import com.example.booking_system.dto.request.RegisterRequestDto;
 import com.example.booking_system.dto.response.RegistrationResponseDto;
-import com.example.booking_system.security.UserPrincipal;
 import com.example.booking_system.service.RegistrationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -10,7 +8,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 

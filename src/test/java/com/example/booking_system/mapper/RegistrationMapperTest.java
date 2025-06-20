@@ -87,7 +87,8 @@ class RegistrationMapperTest {
                 event.getCapacity(),
                 event.getEventType(),
                 event.getPrice(),
-                expectedUserResponseDto
+                expectedUserResponseDto,
+                null
         );
 
         when(userMapper.userToUserResponse(user)).thenReturn(expectedUserResponseDto);

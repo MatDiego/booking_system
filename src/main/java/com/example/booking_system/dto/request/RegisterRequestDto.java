@@ -10,7 +10,7 @@ import lombok.*;
 public record RegisterRequestDto(
         @NotBlank(message = "Username cannot be blank")
         @Size(min = 4, max = 50, message = "Username must be between 4 and 50 characters")
-        @Pattern(regexp = "^\\\\w+$", message = "Username can only contain letters, numbers, and underscores")
+        @Pattern(regexp = "^\\w+$", message = "Username can only contain letters, numbers, and underscores")
         String username,
 
         @NotBlank(message = "Email cannot be blank")
