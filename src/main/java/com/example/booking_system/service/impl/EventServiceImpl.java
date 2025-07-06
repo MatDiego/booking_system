@@ -19,6 +19,7 @@ import com.example.booking_system.repository.UserRepository;
 import com.example.booking_system.repository.specification.EventSpecifications;
 import com.example.booking_system.service.EventService;
 import com.example.booking_system.service.security.SecurityContextService;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -47,7 +48,7 @@ public class EventServiceImpl implements EventService {
 
         UUID organizerId = securityContextService.getCurrentUserId();
         User organizer = userRepository.findByIdWithRoles(organizerId)
-                .orElseThrow();
+                .orElseThrow(() -> new ResourceNotFoundException("User", "id", organizerId));
 
         Event event = eventMapper.eventRequestDtoToEvent(eventRequestDto);
         event.setOrganizer(organizer);
@@ -67,7 +68,7 @@ public class EventServiceImpl implements EventService {
     @Transactional(readOnly = true)
     public EventResponseDto getEvent(UUID eventId) {
         Event event = eventRepository.findById(eventId)
-                .orElseThrow(() -> new ResourceNotFoundException("Event", "eventId", eventId));
+                .orElseThrow(() -> new ResourceNotFoundException("Event", "id", eventId));
         return eventMapper.eventToEventResponseDto(event);
     }
 
@@ -134,33 +135,7 @@ public class EventServiceImpl implements EventService {
         Event eventToUpdate = eventRepository.findById(eventId)
                 .orElseThrow(() -> new ResourceNotFoundException("Event", "id", eventId));
 
-        if (dto.title() != null && !dto.title().isBlank()) {
-            eventToUpdate.setTitle(dto.title());
-        }
-        if (dto.description() != null) {
-            eventToUpdate.setDescription(dto.description());
-        }
-        if (dto.startDate() != null) {
-            eventToUpdate.setStartDate(dto.startDate());
-        }
-        if (dto.endDate() != null) {
-            eventToUpdate.setEndDate(dto.endDate());
-        }
-        if (dto.location() != null) {
-            eventToUpdate.setLocation(dto.location());
-        }
-        if (dto.capacity() != null) {
-            eventToUpdate.setCapacity(dto.capacity());
-        }
-        if (dto.eventType() != null) {
-            eventToUpdate.setEventType(dto.eventType());
-        }
-        if (dto.price() != null) {
-            eventToUpdate.setPrice(dto.price());
-        }
-        if (dto.eventStatus() != null) {
-            eventToUpdate.setEventStatus(dto.eventStatus());
-        }
+        eventMapper.updateEventFromDto(dto, eventToUpdate);
 
         return eventMapper.eventToEventResponseDto(eventToUpdate);
     }
